@@ -3,123 +3,118 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project Intake Sheet</title>
+  <title>Project Intake Form</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #FFEBCC;
-    }
-
+    /* Add your CSS styles here */
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #e1e1e1;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
-    form {
-      background-color: #FFEBCC;
-      border: none;
-      padding: 20px;
-      border-radius: 5px;
+    .section {
+      margin-bottom: 20px;
     }
-
+    .title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
     label {
       display: block;
-      margin-bottom: 5px;
+      margin: 5px 0;
     }
-
-    input[type="text"],
-    textarea {
+    input {
+      margin-bottom: 10px;
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #e1e1e1;
-      border-radius: 5px;
-      box-sizing: border-box;
     }
-
     button {
-      background-color: #5cb85c;
-      color: #fff;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #4cae4c;
-    }
-
-    .title {
-      font-size: 2em;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .resource {
-      margin-bottom: 20px;
-    }
-
-    .salary {
-      display: none;
+      margin-top: 20px;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <form id="companyForm">
-      <!-- General Information -->
-      <div>
+    <form id="projectIntakeForm">
+      <!-- General Information Section -->
+      <div class="section">
         <h2 class="title">General Information</h2>
-        <!-- ... General information fields ... -->
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName" name="projectName">
+        
+        <!-- Add other general information fields here -->
       </div>
 
-      <!-- General Costs Information -->
-      <div>
+      <!-- General Costs Information Section -->
+      <div class="section">
         <h2 class="title">General Costs Information</h2>
-        <!-- ... Costs information fields ... -->
-
-        <!-- Internal Resources -->
-        <h3>Internal Resources</h3>
-        <!-- ... Internal resources fields ... -->
-
-        <!-- External Resources -->
-        <h3>External Resources</h3>
-        <!-- ... External resources fields ... -->
-
-        <button type="button" id="createExcel">Create Excel</button>
+        <label for="estimatedBudget">Estimated Budget:</label>
+        <input type="number" id="estimatedBudget" name="estimatedBudget">
+        
+        <!-- Add other general costs fields here -->
       </div>
+
+      <!-- Internal Resources Section -->
+      <div class="section">
+        <h3 class="title">Internal Resources</h3>
+        <label for="internalResourceName">Name:</label>
+        <input type="text" id="internalResourceName" name="internalResourceName">
+        <!-- Add other internal resource fields here -->
+      </div>
+
+      <!-- External Resources Section -->
+      <div class="section">
+        <h3 class="title">External Resources</h3>
+        <label for="externalResourceName">Name:</label>
+        <input type="text" id="externalResourceName" name="externalResourceName">
+        <!-- Add other external resource fields here -->
+      </div>
+
+      <button type="button" id="createExcel">Create Excel</button>
     </form>
   </div>
 
   <script>
     document.getElementById('createExcel').addEventListener('click', function() {
-      // ... JavaScript to handle form data and create Excel file ...
-    });
+      // Create a new workbook and a new worksheet
+      var wb = XLSX.utils.book_new();
+      var ws = XLSX.utils.aoa_to_sheet([]);
 
-    const internalResources = [
-      'businessAnalyst', 'solutionArchitect', 'developer', 
-      'projectManager', 'enterpriseArchitect', 'projectCostOfficer'
-    ];
-    const externalResources = [
-      'externalBusinessAnalyst', 'externalSolutionArchitect', 
-      'externalDeveloper', 'externalProjectManager', 
-      'externalEnterpriseArchitect', 'externalProjectCostOfficer'
-    ];
+      // Get values from the form
+      var projectName = document.getElementById('projectName').value;
+      var estimatedBudget = document.getElementById('estimatedBudget').value;
+      var internalResourceName = document.getElementById('internalResourceName').value;
+      var externalResourceName = document.getElementById('externalResourceName').value;
+      
+      // Add the headers and form data to the worksheet
+      var data = [
+        ["Project Intake Form"],
+        [],
+        ["General Information"],
+        ["Project Name", projectName],
+        // ... Add other general information rows here ...
+        [],
+        ["General Costs Information"],
+        ["Estimated Budget", estimatedBudget],
+        // ... Add other general costs rows here ...
+        [],
+        ["Internal Resources"],
+        ["Resource Name", internalResourceName],
+        // ... Add other internal resources rows here ...
+        [],
+        ["External Resources"],
+        ["Resource Name", externalResourceName],
+        // ... Add other external resources rows here ...
+      ];
+      
+      // Append the form data to the worksheet
+      XLSX.utils.sheet_add_aoa(ws, data);
+      
+      // Append the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Project Intake");
 
-    internalResources.concat(externalResources).forEach(resource => {
-      document.getElementById(resource).addEventListener('change', function() {
-        // ... JavaScript to show/hide salary input fields ...
-      });
+      // Generate the Excel file
+      XLSX.writeFile(wb, "Project_Intake_Form.xlsx");
     });
   </script>
 </body>
 </html>
+
