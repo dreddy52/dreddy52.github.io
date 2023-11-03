@@ -1,153 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Intake Form</title>
-    <style>
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .form-section {
-            display: none;
-        }
-        .form-section.active {
-            display: block;
-        }
-        button {
-            padding: 10px 15px;
-            margin: 5px;
-        }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Intake Sheet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #FFEBCC;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #e1e1e1;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    form {
+      background-color: #FFEBCC;
+      border: none;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #e1e1e1;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #5cb85c;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #4cae4c;
+    }
+
+    .title {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .resource {
+      margin-bottom: 20px;
+    }
+
+    .salary {
+      display: none;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
+
 <body>
+  <div class="container">
+    <form id="companyForm">
+      <!-- General Information -->
+      <div>
+        <h2 class="title">General Information</h2>
+        <label for="companyName">Company Name</label>
+        <input type="text" id="companyName" name="companyName" required>
 
-<div class="container">
-    <form id="projectIntakeForm">
+        <label for="companyUrl">Company URL</label>
+        <input type="text" id="companyUrl" name="companyUrl" required>
 
-        <!-- Page 1 -->
-        <div class="form-section active" id="page1">
-            <label for="projectName">Project Name:</label>
-            <input type="text" id="projectName" name="projectName" required><br>
+        <label for="companyMission">Company Mission</label>
+        <textarea id="companyMission" name="companyMission" required></textarea>
 
-            <label for="projectManager">Project Manager:</label>
-            <input type="text" id="projectManager" name="projectManager" required><br>
+        <label for="companyVision">Company Vision</label>
+        <textarea id="companyVision" name="companyVision" required></textarea>
 
-            <label for="projectSponsor">Project Sponsor:</label>
-            <input type="text" id="projectSponsor" name="projectSponsor" required><br>
+        <label for="coreActivities">Core Activities</label>
+        <textarea id="coreActivities" name="coreActivities" required></textarea>
 
-            <label for="projectStartDate">Start Date:</label>
-            <input type="date" id="projectStartDate" name="projectStartDate" required><br>
+        <label for="projectName">Project Name</label>
+        <input type="text" id="projectName" name="projectName" required>
 
-            <label for="projectEndDate">End Date:</label>
-            <input type="date" id="projectEndDate" name="projectEndDate" required><br>
+        <label for="projectCode">Project Code</label>
+        <input type="text" id="projectCode" name="projectCode" required>
+
+        <label for="contactName">Contact Name</label>
+        <input type="text" id="contactName" name="contactName" required>
+
+        <label for="contactEmail">Contact Email</label>
+        <input type="text" id="contactEmail" name="contactEmail" required>
+
+        <label for="projectDescription">Project Description</label>
+        <textarea id="projectDescription" name="projectDescription" required></textarea>
+      </div>
+
+      <!-- General Costs Information -->
+      <div>
+        <h2 class="title">General Costs Information</h2>
+        <label for="annualCpiRateCosts">Annual CPI Rate - Costs</label>
+        <input type="text" id="annualCpiRateCosts" name="annualCpiRateCosts" required>
+
+        <label for="annualCpiBenefits">Annual CPI - Benefits</label>
+        <input type="text" id="annualCpiBenefits" name="annualCpiBenefits" required>
+
+        <label for="tExpenses">T & Expenses</label>
+        <input type="text" id="tExpenses" name="tExpenses" required>
+
+        <label for="internalSalaryYearlyIncrease">Internal Salary yearly increase</label>
+        <input type="text" id="internalSalaryYearlyIncrease" name="internalSalaryYearlyIncrease" required>
+
+        <label for="externalSalaryIncrease">External Salary increase</label>
+        <input type="text" id="externalSalaryIncrease" name="externalSalaryIncrease" required>
+
+        <!-- Internal Resources -->
+        <h3>Internal Resources</h3>
+        <div class="resource">
+          <input type="checkbox" id="businessAnalyst" name="businessAnalyst">
+          <label for="businessAnalyst">Business Analyst</label>
+          <div class="salary" id="businessAnalystSalary">
+            <label for="businessAnalystYearlySalary">Yearly Salary</label>
+            <input type="text" id="businessAnalystYearlySalary" name="businessAnalystYearlySalary">
+          </div>
         </div>
 
-        <!-- Page 2 -->
-        <div class="form-section" id="page2">
-            <label for="projectObjective">Project Objective:</label>
-            <textarea id="projectObjective" name="projectObjective" required></textarea><br>
-
-            <label for="projectScope">Project Scope:</label>
-            <textarea id="projectScope" name="projectScope" required></textarea><br>
-
-            <label for="projectMilestones">Project Milestones:</label>
-            <textarea id="projectMilestones" name="projectMilestones" required></textarea><br>
+        <div class="resource">
+          <input type="checkbox" id="solutionArchitect" name="solutionArchitect">
+          <label for="solutionArchitect">Solution Architect</label>
+          <div class="salary" id="solutionArchitectSalary">
+            <label for="solutionArchitectYearlySalary">Yearly Salary</label>
+            <input type="text" id="solutionArchitectYearlySalary" name="solutionArchitectYearlySalary">
+          </div>
         </div>
 
-        <!-- Page 3 -->
-        <div class="form-section" id="page3">
-            <label for="estimatedBudget">Estimated Budget:</label>
-            <input type="number" id="estimatedBudget" name="estimatedBudget" required><br>
-
-            <label for="actualCost">Actual Cost:</label>
-            <input type="number" id="actualCost" name="actualCost" required><br>
-
-            <label for="resourcesNeeded">Resources Needed:</label>
-            <textarea id="resourcesNeeded" name="resourcesNeeded" required></textarea><br>
+        <div class="resource">
+          <input type="checkbox" id="developer" name="developer">
+          <label for="developer">Developer</label>
+          <div class="salary" id="developerSalary">
+            <label for="developerYearlySalary">Yearly Salary</label>
+            <input type="text" id="developerYearlySalary" name="developerYearlySalary">
+          </div>
         </div>
 
-        <div class="navigation-buttons">
-            <button type="button" id="prevBtn" onclick="navigate(-1)">Previous</button>
-            <button type="button" id="nextBtn" onclick="navigate(1)">Next</button>
-            <button type="button" id="submitBtn" onclick="generateExcel()">Submit & Generate Excel</button>
+        <div class="resource">
+          <input type="checkbox" id="projectManager" name="projectManager">
+          <label for="projectManager">Project Manager</label>
+          <div class="salary" id="projectManagerSalary">
+            <label for="projectManagerYearlySalary">Yearly Salary</label>
+            <input type="text" id="projectManagerYearlySalary" name="projectManagerYearlySalary">
+          </div>
         </div>
-        
+
+        <div class="resource">
+          <input type="checkbox" id="enterpriseArchitect" name="enterpriseArchitect">
+          <label for="enterpriseArchitect">Enterprise Architect</label>
+          <div class="salary" id="enterpriseArchitectSalary">
+            <label for="enterpriseArchitectYearlySalary">Yearly Salary</label>
+            <input type="text" id="enterpriseArchitectYearlySalary" name="enterpriseArchitectYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="projectCostOfficer" name="projectCostOfficer">
+          <label for="projectCostOfficer">Project Cost Officer</label>
+          <div class="salary" id="projectCostOfficerSalary">
+            <label for="projectCostOfficerYearlySalary">Yearly Salary</label>
+            <input type="text" id="projectCostOfficerYearlySalary" name="projectCostOfficerYearlySalary">
+          </div>
+        </div>
+
+        <!-- External Resources -->
+        <h3>External Resources</h3>
+        <div class="resource">
+          <input type="checkbox" id="externalBusinessAnalyst" name="externalBusinessAnalyst">
+          <label for="externalBusinessAnalyst">Business Analyst</label>
+          <div class="salary" id="externalBusinessAnalystSalary">
+            <label for="externalBusinessAnalystYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalBusinessAnalystYearlySalary" name="externalBusinessAnalystYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="externalSolutionArchitect" name="externalSolutionArchitect">
+          <label for="externalSolutionArchitect">Solution Architect</label>
+          <div class="salary" id="externalSolutionArchitectSalary">
+            <label for="externalSolutionArchitectYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalSolutionArchitectYearlySalary" name="externalSolutionArchitectYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="externalDeveloper" name="externalDeveloper">
+          <label for="externalDeveloper">Developer</label>
+          <div class="salary" id="externalDeveloperSalary">
+            <label for="externalDeveloperYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalDeveloperYearlySalary" name="externalDeveloperYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="externalProjectManager" name="externalProjectManager">
+          <label for="externalProjectManager">Project Manager</label>
+          <div class="salary" id="externalProjectManagerSalary">
+            <label for="externalProjectManagerYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalProjectManagerYearlySalary" name="externalProjectManagerYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="externalEnterpriseArchitect" name="externalEnterpriseArchitect">
+          <label for="externalEnterpriseArchitect">Enterprise Architect</label>
+          <div class="salary" id="externalEnterpriseArchitectSalary">
+            <label for="externalEnterpriseArchitectYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalEnterpriseArchitectYearlySalary" name="externalEnterpriseArchitectYearlySalary">
+          </div>
+        </div>
+
+        <div class="resource">
+          <input type="checkbox" id="externalProjectCostOfficer" name="externalProjectCostOfficer">
+          <label for="externalProjectCostOfficer">Project Cost Officer</label>
+          <div class="salary" id="externalProjectCostOfficerSalary">
+            <label for="externalProjectCostOfficerYearlySalary">Yearly Salary</label>
+            <input type="text" id="externalProjectCostOfficerYearlySalary" name="externalProjectCostOfficerYearlySalary">
+          </div>
+        </div>
+
+        <button type="button" id="createExcel">Create Excel</button>
+      </div>
     </form>
-</div>
+  </div>
 
-<script>
-    var currentTab = 0;
-    document.getElementById('submitBtn').style.display = 'none';
-    showTab(currentTab);
-
-    function showTab(n) {
-        var x = document.getElementsByClassName("form-section");
-        x[n].style.display = "block";
-        if (n == 0) {
-            document.getElementById('prevBtn').style.display = "none";
+   <script>
+    document.getElementById('createExcel').addEventListener('click', function() {
+      const form = document.getElementById('companyForm');
+      const data = new FormData(form);
+      const generalInfoObj = {};
+      const generalCostsObj = {};
+      data.forEach((value, key) => {
+        if (key.startsWith('company') || key.startsWith('project') || key.startsWith('contact')) {
+          generalInfoObj[key] = value;
         } else {
-            document.getElementById('prevBtn').style.display = "inline";
+          generalCostsObj[key] = value;
         }
-        if (n == (x.length - 1)) {
-            document.getElementById('nextBtn').style.display = "none";
-            document.getElementById('submitBtn').style.display = "inline";
+      });
+      const ws1 = XLSX.utils.json_to_sheet([generalInfoObj], {
+        cellStyles: true,
+        header: Object.keys(generalInfoObj),
+      });
+      const ws2 = XLSX.utils.json_to_sheet([generalCostsObj], {
+        cellStyles: true,
+        header: Object.keys(generalCostsObj),
+      });
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws1, 'General Information');
+      XLSX.utils.book_append_sheet(wb, ws2, 'General Costs Information');
+      const filename = generalInfoObj['companyName'] ? generalInfoObj['companyName'] + '.xlsx' : 'companyData.xlsx';
+      XLSX.writeFile(wb, filename);
+    });
+
+    const internalResources = ['businessAnalyst', 'solutionArchitect', 'developer', 'projectManager', 'enterpriseArchitect', 'projectCostOfficer'];
+    const externalResources = ['externalBusinessAnalyst', 'externalSolutionArchitect', 'externalDeveloper', 'externalProjectManager', 'externalEnterpriseArchitect', 'externalProjectCostOfficer'];
+
+    internalResources.concat(externalResources).forEach(resource => {
+      document.getElementById(resource).addEventListener('change', function() {
+        const salaryDiv = document.getElementById(resource + 'Salary');
+        if (this.checked) {
+          salaryDiv.style.display = 'block';
         } else {
-            document.getElementById('nextBtn').style.display = "inline";
-            document.getElementById('submitBtn').style.display = "none";
+          salaryDiv.style.display = 'none';
         }
-    }
-
-    function navigate(n) {
-        var x = document.getElementsByClassName("form-section");
-        x[currentTab].style.display = "none";
-        currentTab = currentTab + n;
-        if (currentTab >= x.length) {
-            currentTab = x.length - 1;
-        }
-        if (currentTab < 0) {
-            currentTab = 0;
-        }
-        showTab(currentTab);
-    }
-
-    function generateExcel() {
-        // Collect data from form...
-        var formElements = document.getElementById('projectIntakeForm').elements;
-        var formData = {};
-        for (var i = 0; i < formElements.length; i++) {
-            if (formElements[i].type !== "button") {
-                formData[formElements[i].name] = formElements[i].value;
-            }
-        }
-
-        // Use the form data to generate an Excel file...
-        var wb = XLSX.utils.book_new();
-        wb.Props = {
-            Title: "Project Intake Form",
-            Subject: "Form Data",
-            Author: "Project Management Office",
-            CreatedDate: new Date()
-        };
-
-        wb.SheetNames.push("Project Details");
-        var ws_data = [
-            // ... You will fill this part with your actual form data structure ...
-        ];
-        // Use formData to fill in the data
-        for (var key in formData) {
-            if (formData.hasOwnProperty(key)) {
-                ws_data.push([key, formData[key]]);
-            }
-        }
-
-        var ws = XLSX.utils.aoa_to_sheet(ws_data);
-        XLSX.utils.book_append_sheet(wb, ws, "Project Details");
-        XLSX.writeFile(wb, "ProjectIntakeForm.xlsx");
-    }
-</script>
-
+      });
+    });
+  </script>
 </body>
+
 </html>
