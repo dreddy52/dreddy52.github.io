@@ -1,139 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complete Project Intake Form</title>
-  <style>
-    .container {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .form-section {
-      margin-bottom: 20px;
-    }
-    .form-section h3 {
-      font-weight: bold;
-    }
-    label {
-      margin-top: 10px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-    }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Intake Form</title>
+    <style>
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="container">
+
+<div class="container">
     <form id="projectIntakeForm">
-      <div class="form-section">
-        <h3>General Information</h3>
-        <label for="projectName">Project Name:</label>
-        <input type="text" id="projectName" name="projectName" required>
-        
-        <label for="projectManager">Project Manager:</label>
-        <input type="text" id="projectManager" name="projectManager" required>
-        
-        <label for="projectSponsor">Project Sponsor:</label>
-        <input type="text" id="projectSponsor" name="projectSponsor" required>
-        
-        <label for="projectStartDate">Start Date:</label>
-        <input type="date" id="projectStartDate" name="projectStartDate" required>
-        
-        <label for="projectEndDate">End Date:</label>
-        <input type="date" id="projectEndDate" name="projectEndDate" required>
-      </div>
 
-      <div class="form-section">
-        <h3>Project Costs</h3>
-        <label for="estimatedBudget">Estimated Budget:</label>
-        <input type="number" id="estimatedBudget" name="estimatedBudget" required>
-        
-        <label for="actualCost">Actual Cost:</label>
-        <input type="number" id="actualCost" name="actualCost" required>
-      </div>
+        <!-- Page 1 -->
+        <div class="form-section active" id="page1">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" required><br>
 
-      <div class="form-section">
-        <h3>Resources</h3>
-        <label for="internalResources">Internal Resources:</label>
-        <textarea id="internalResources" name="internalResources" rows="3" required></textarea>
-        
-        <label for="externalResources">External Resources:</label>
-        <textarea id="externalResources" name="externalResources" rows="3" required></textarea>
-      </div>
+            <label for="projectManager">Project Manager:</label>
+            <input type="text" id="projectManager" name="projectManager" required><br>
 
-      <div class="form-section">
-        <h3>Approvals</h3>
-        <label for="managerApproval">Manager Approval:</label>
-        <select id="managerApproval" name="managerApproval" required>
-          <option value="">Select</option>
-          <option value="Approved">Approved</option>
-          <option value="Denied">Denied</option>
-        </select>
-        
-        <label for="sponsorApproval">Sponsor Approval:</label>
-        <select id="sponsorApproval" name="sponsorApproval" required>
-          <option value="">Select</option>
-          <option value="Approved">Approved</option>
-          <option value="Denied">Denied</option>
-        </select>
-      </div>
+            <label for="projectSponsor">Project Sponsor:</label>
+            <input type="text" id="projectSponsor" name="projectSponsor" required><br>
 
-      <button type="button" id="createExcel">Create Excel</button>
+            <label for="projectStartDate">Start Date:</label>
+            <input type="date" id="projectStartDate" name="projectStartDate" required><br>
+
+            <label for="projectEndDate">End Date:</label>
+            <input type="date" id="projectEndDate" name="projectEndDate" required><br>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="form-section" id="page2">
+            <label for="projectObjective">Project Objective:</label>
+            <textarea id="projectObjective" name="projectObjective" required></textarea><br>
+
+            <label for="projectScope">Project Scope:</label>
+            <textarea id="projectScope" name="projectScope" required></textarea><br>
+
+            <label for="projectMilestones">Project Milestones:</label>
+            <textarea id="projectMilestones" name="projectMilestones" required></textarea><br>
+        </div>
+
+        <!-- Page 3 -->
+        <div class="form-section" id="page3">
+            <label for="estimatedBudget">Estimated Budget:</label>
+            <input type="number" id="estimatedBudget" name="estimatedBudget" required><br>
+
+            <label for="actualCost">Actual Cost:</label>
+            <input type="number" id="actualCost" name="actualCost" required><br>
+
+            <label for="resourcesNeeded">Resources Needed:</label>
+            <textarea id="resourcesNeeded" name="resourcesNeeded" required></textarea><br>
+        </div>
+
+        <div class="navigation-buttons">
+            <button type="button" id="prevBtn" onclick="navigate(-1)">Previous</button>
+            <button type="button" id="nextBtn" onclick="navigate(1)">Next</button>
+            <button type="button" id="submitBtn" onclick="generateExcel()">Submit & Generate Excel</button>
+        </div>
+        
     </form>
-  </div>
+</div>
 
-  <script>
-    document.getElementById('createExcel').addEventListener('click', function() {
-      var wb = XLSX.utils.book_new();
+<script>
+    var currentTab = 0;
+    document.getElementById('submitBtn').style.display = 'none';
+    showTab(currentTab);
 
-      var projectName = document.getElementById('projectName').value;
-      var projectManager = document.getElementById('projectManager').value;
-      var projectSponsor = document.getElementById('projectSponsor').value;
-      var projectStartDate = document.getElementById('projectStartDate').value;
-      var projectEndDate = document.getElementById('projectEndDate').value;
-      var estimatedBudget = document.getElementById('estimatedBudget').value;
-      var actualCost = document.getElementById('actualCost').value;
-      var internalResources = document.getElementById('internalResources').value;
-      var externalResources = document.getElementById('externalResources').value;
-      var managerApproval = document.getElementById('managerApproval').value;
-      var sponsorApproval = document.getElementById('sponsorApproval').value;
+    function showTab(n) {
+        var x = document.getElementsByClassName("form-section");
+        x[n].style.display = "block";
+        if (n == 0) {
+            document.getElementById('prevBtn').style.display = "none";
+        } else {
+            document.getElementById('prevBtn').style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+            document.getElementById('nextBtn').style.display = "none";
+            document.getElementById('submitBtn').style.display = "inline";
+        } else {
+            document.getElementById('nextBtn').style.display = "inline";
+            document.getElementById('submitBtn').style.display = "none";
+        }
+    }
 
-      var ws_data = [
-        ['Project Intake Form'],
-        ['General Information'],
-        ['Project Name', projectName],
-        ['Project Manager', projectManager],
-        ['Project Sponsor', projectSponsor],
-        ['Start Date', projectStartDate],
-        ['End Date', projectEndDate],
-        [],
-        ['Project Costs'],
-        ['Estimated Budget', estimatedBudget],
-        ['Actual Cost', actualCost],
-        [],
-        ['Resources'],
-        ['Internal Resources', internalResources],
-        ['External Resources', externalResources],
-        [],
-        ['Approvals'],
-        ['Manager Approval', managerApproval],
-        ['Sponsor Approval', sponsorApproval]
-      ];
+    function navigate(n) {
+        var x = document.getElementsByClassName("form-section");
+        x[currentTab].style.display = "none";
+        currentTab = currentTab + n;
+        if (currentTab >= x.length) {
+            currentTab = x.length - 1;
+        }
+        if (currentTab < 0) {
+            currentTab = 0;
+        }
+        showTab(currentTab);
+    }
 
-      var ws = XLSX.utils.aoa_to_sheet(ws_data);
+    function generateExcel() {
+        // Collect data from form...
+        var formElements = document.getElementById('projectIntakeForm').elements;
+        var formData = {};
+        for (var i = 0; i < formElements.length; i++) {
+            if (formElements[i].type !== "button") {
+                formData[formElements[i].name] = formElements[i].value;
+            }
+        }
 
-      XLSX.utils.book_append_sheet(wb, ws, "Project Details");
+        // Use the form data to generate an Excel file...
+        var wb = XLSX.utils.book_new();
+        wb.Props = {
+            Title: "Project Intake Form",
+            Subject: "Form Data",
+            Author: "Project Management Office",
+            CreatedDate: new Date()
+        };
 
-      XLSX.writeFile(wb, "ProjectIntakeForm.xlsx");
-    });
-  </script>
+        wb.SheetNames.push("Project Details");
+        var ws_data = [
+            // ... You will fill this part with your actual form data structure ...
+        ];
+        // Use formData to fill in the data
+        for (var key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                ws_data.push([key, formData[key]]);
+            }
+        }
+
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Project Details");
+        XLSX.writeFile(wb, "ProjectIntakeForm.xlsx");
+    }
+</script>
+
 </body>
 </html>
